@@ -91,5 +91,7 @@ OpenGL ES 2.0命名规范
 
 gl.{基础函数名}{参数个数}{参数类型}
 
+同样，`gl.uniform4f`也有uniform1f,uniform2f,uniform3f
+
 ## 参考
 * [WebGL Programming Guide](https://sites.google.com/site/webglbook/home)
