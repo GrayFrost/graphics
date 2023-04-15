@@ -65,8 +65,31 @@ canvas的中心点：(0.0, 0.0, 0.0)
 canvas的上边缘和下边缘：(-1.0, 0.0, 0.0) 和 (1.0, 0.0, 0.0)
 canvas的左边缘和右边缘：(0.0, -1.0, 0.0) 和 (0.0, 1.0, 0.0)
 
+如何在JavaScript和着色器之间传输数据？
+attribute变量，uniform变量。attribute变量传输的是那些与顶点相关的数据，而uniform变量传输的是那些对于所有顶点都相同（或与顶点无关）的数据。
 
+使用辅助函数initShaders()在WebGL系统中建立了顶点着色器。然后，WebGL会对着色器进行解析，辨识出着色器具有的attribute变量。每个变量都具有一个存储地址，以便通过存储地址想变量传输数据。
 
+```
+gl.getAttribLocation(program, name)
+program 指定包含顶点着色器和片元着色器的着色器程序对象
+name 指定想要获取其存储地址的attribute变量的名称
+```
+
+```
+gl.vertextAttrib3f(location, v0, v1, v2)
+location 指定将要修改的attribute变量的存储位置
+v0, v1, v2 对应坐标值
+
+除了vertextAttrib3f外，还有
+vertextAttrib1f(location, v0)
+vertextAttrib2f(location, v0, v1)
+vertextAttrib4f(location, v0, v1, v2, v3)
+```
+
+OpenGL ES 2.0命名规范
+
+gl.{基础函数名}{参数个数}{参数类型}
 
 ## 参考
 * [WebGL Programming Guide](https://sites.google.com/site/webglbook/home)
