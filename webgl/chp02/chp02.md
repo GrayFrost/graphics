@@ -40,6 +40,33 @@ gl.DEPTH_BUFFER_BIT 深度缓冲区
 gl.STENCIL_BUFFER_BIT 模板缓冲区
 ```
 
+shader编写
+如果你是在vscode中编写shader的代码，推荐装插件`Comment tagged templates`
+顶点着色器（Vertex shader）
+片元着色器（Fragment shader）
+
+
+流程
+获取canvas元素 -> 获取WebGL绘图上下文 -> 初始化着色器 -> 设置canvas背景色 -> 清除之前的绘图内容 -> 绘图。
+
+齐次坐标齐次坐标使用如下的符号描述：(x,y,z,w)。齐次坐标(x,y,z,w)等价于三维坐标(x/w,y/w,z/w)。所以如果齐次坐标的第四个分量是1，我们可以将它当做三维坐标使用。
+
+gl.drawArrays()
+```
+gl.drawArrays(mode, first, count)
+mode表示指定的方式，可接收如下常量：gl.POINTS, gl.LINES, gl.LINE_STRIP, gl.LINE_LOOP, gl.TRIANGLES, gl.TRIANGLE_STRIP, gl.TRIANGLE_FAN
+
+first 表示从那个顶点开始绘制
+count标志绘制需要多少个顶点
+```
+
+WebGL中的坐标系
+canvas的中心点：(0.0, 0.0, 0.0)
+canvas的上边缘和下边缘：(-1.0, 0.0, 0.0) 和 (1.0, 0.0, 0.0)
+canvas的左边缘和右边缘：(0.0, -1.0, 0.0) 和 (0.0, 1.0, 0.0)
+
+
+
 
 ## 参考
 * [WebGL Programming Guide](https://sites.google.com/site/webglbook/home)
