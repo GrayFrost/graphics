@@ -258,7 +258,7 @@ let VSHADER_SOURCE = /* glsl */ `
   }
 `
 ```
-`shader`中文为着色器，分为顶点着色器（Vertex shader）和片元着色器（Fragment shader）。
+`shader`中文为着色器，分为顶点着色器（Vertex shader）和片元着色器（Fragment shader）。顶点着色器用来处理每个顶点，计算出每个顶点的位置，片元着色器用来对光栅化后的像素进行渲染。
 
 
 ## 齐次坐标
@@ -266,22 +266,25 @@ let VSHADER_SOURCE = /* glsl */ `
 
 
 ## WebGL中的坐标系
-canvas的中心点：(0.0, 0.0, 0.0)
-canvas的左边缘和右边缘：(-1.0, 0.0, 0.0) 和 (1.0, 0.0, 0.0)
-canvas的上边缘和下边缘：(0.0, -1.0, 0.0) 和 (0.0, 1.0, 0.0)
+* canvas的中心点：(0.0, 0.0, 0.0)
+* canvas的左边缘和右边缘：(-1.0, 0.0, 0.0) 和 (1.0, 0.0, 0.0)
+* canvas的上边缘和下边缘：(0.0, -1.0, 0.0) 和 (0.0, 1.0, 0.0)
 
 在上面的代码中，我们有一段逻辑是将浏览器的点击坐标转成webgl的坐标，我们进行分析一下。
 ```javascript
 x = ((x - rect.left) - canvas.width / 2) / (canvas.width / 2);
 y = ((canvas.height / 2) - (y - rect.top)) / (canvas.height / 2);
 ```
-首先x是`clientX`，是点击的点在浏览器中的x坐标，`rect.left`是canvas左上顶点距离浏览器的左边距离。`(x - rect.left)`即是点击的点在canvas中的坐标。`canvas.width / 2`和`canvas.height / 2`是canvas的中心点的坐标。`((x - rect.left) - canvas.width / 2)` 相当于当前的点相对于中心点来说它的坐标是多少，也就是我们把原本canvas左上角的原点转移到了canvas的中心。之后除以(canvas.width / 2)相当于把相对的像素值转成0-1的范围，因为webgl的坐标值是`[-1.0, 1.0]`的。
+首先x是`clientX`，是点击的点在浏览器中的x坐标，`rect.left`是canvas左上顶点距离浏览器的左边距离。  
+`(x - rect.left)`即是点击的点在canvas中的坐标。`canvas.width / 2`和`canvas.height / 2`是canvas的中心点的坐标。  
+`((x - rect.left) - canvas.width / 2)` 相当于当前的点相对于中心点来说它的坐标是多少，也就是我们把原本canvas左上角的原点转移到了canvas的中心。  
+之后除以(canvas.width / 2)相当于把相对的像素值转成0-1的范围，因为webgl的坐标值是`[-1.0, 1.0]`的。  
 举个例子，如果我们有一个canvas，长200px，宽200px。我们先假设canvas的左上角即是浏览器视窗的左上角，省去`rect.left`和`rect.top`的逻辑。假如我们刚好点击一个点，这个点的坐标是`[50,50]`。然后我们开始转换逻辑。canvas的中心点是`[100, 100]`。此时点击的点相对canvas来说是`[50 - 100, 100 - 50]`变成`[-50, 50]`，然后转成webgl坐标变成`[-50 / 100, 50 / 100]`即是`[-0.5, 0.5]`。
 
 ## 如何在JavaScript和着色器之间传输数据？
 `attribute`变量，`uniform`变量。`attribute`变量传输的是那些与顶点相关的数据，而`uniform`变量传输的是那些对于所有顶点都相同（或与顶点无关）的数据。比如每个顶点的位置是不一样的，我们用`attribute`传值，而有时我们需要对这个图像做变换，类似对整个图像进行平移，每个顶点都是平移相同的距离，那我们就用`uniform`变量。  
 
-使用辅助函数initShaders()在WebGL系统中建立了顶点着色器。然后，WebGL会对着色器进行解析，辨识出着色器具有的attribute变量。每个变量都具有一个存储地址，以便通过存储地址想变量传输数据。
+使用辅助函数initShaders()在WebGL系统中建立了顶点着色器。然后，WebGL会对着色器进行解析，辨识出着色器具有的attribute变量。每个变量都具有一个存储地址，以便通过存储地址向变量传输数据。
 
 ```javascript
 gl.getAttribLocation(program, name)
