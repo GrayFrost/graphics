@@ -1,10 +1,10 @@
 # 绘制和变换三角形
-上一章的流程：获取canvas元素 -> 获取WebGL绘图上下文 -> 初始化着色器 -> 设置canvas背景色 -> 清除之前的绘图内容 -> 绘图
 
-这次多了一个步骤：
-获取canvas元素 -> 获取WebGL绘图上下文 -> 初始化着色器 -> 设置点的坐标信息 -> 设置canvas背景色 -> 清除之前的绘图内容 -> 绘图
+## 画单个点
+上一章画单个点的流程：获取canvas元素 -> 获取WebGL绘图上下文 -> 初始化着色器 -> 设置canvas背景色 -> 清除之前的绘图内容 -> 绘图。
 
-在开始之前，我们回顾下上一章简单的画一个点的流程：
+
+我们回顾下这个流程：
 ```javascript
 // 第一步：获取webgl上下文
 let canvas = document.querySelector('#webgl');
@@ -61,8 +61,42 @@ gl.clear(gl.COLOR_BUFFER_BIT);
 gl.drawArrays(gl.POINTS, 0, 1);
 ```
 
-设置点的坐标信息的详细流程：
+## 画多个点
+画多个点多了一个步骤：  
+获取canvas元素 -> 获取WebGL绘图上下文 -> 初始化着色器 -> **设置点的坐标信息** -> 设置canvas背景色 -> 清除之前的绘图内容 -> 绘图。  
+
+**设置点的坐标信息**的详细流程：
 创建缓冲区 -> 将缓冲区绑定到目标 -> 向缓冲区写入数据 -> 将缓冲区对象分配给attribute变量 -> 启动缓冲区对象与attribute变量的连接。
+
+```javascript
+// gl.vertexAttrib3f(a_Position, 0.0, 0.5, 0.0); //将上一章中的只画一个点的操作注释
+
+// 准备好点数据
+let vetices = new Float32Array([
+	-0.5, 0, 0.5, 0, 0, 0.5
+]);
+
+// 创建缓冲区
+const vertexBuffer = gl.createBuffer();
+// 绑定缓冲区
+gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+// 向缓冲区传准备好的数据
+gl.bufferData(gl.ARRAY_BUFFER, vetices, gl.STATIC_DRAW);
+// 参数意义
+gl.vertexAttribPointer(a_Position, 2, gl.FLOAT, false, 0, 0);
+gl.enableVertexAttribArray(a_Position);
+
+gl.clearColor(0.0, 0.0, 0.0, 1.0);
+gl.clear(gl.COLOR_BUFFER_BIT);
+gl.drawArrays(gl.POINTS, 0, 3); // 将1改成3，表示要画三个点。
+```
+
+gl.bindBuffer
+gl.bufferData
+gl.vertexAttribPointer
+gl.enableVertexAttribArray
+参数意义
+
 
 旋转：
 三角函数两角和差公式
