@@ -98,6 +98,9 @@ gl.enableVertexAttribArray
 参数意义
 
 
+创建多个buffer？
+varying 传值
+
 旋转：
 三角函数两角和差公式
 
