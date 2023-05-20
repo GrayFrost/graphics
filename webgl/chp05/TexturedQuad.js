@@ -107,6 +107,6 @@ function loadTexture(gl, n, texture, u_Sampler, image) {
 
   // 将0号纹理传递给着色器
   gl.uniform1i(u_Sampler, 0);
-  gl.clear(gl.COLOR_BFFER_BIT);
+  gl.clear(gl.COLOR_BUFFER_BIT);
   gl.drawArrays(gl.TRIANGLE_STRIP, 0, n); // 绘制矩形
 }
